@@ -74,7 +74,6 @@ check_genius_token <- function() {
 #' This function retrieves the details of a specific annotation from the Genius API.
 #'
 #' @param annotation_id A string representing the ID of the annotation to retrieve. This parameter is required.
-#' @param text_format A string specifying the format of the text returned. Options are "dom" (default), "html", or "plain".
 #'
 #' @return A list containing the annotation details in JSON format. The list includes various fields such as 'id', 'annotator_id', 'annotator_login', etc.
 #' The function will return an error if the request fails (i.e., if the HTTP status code is not 200).
@@ -84,27 +83,25 @@ check_genius_token <- function() {
 #' \dontrun{
 #' genius_get_annotation(annotation_id = "12345")
 #' }
-genius_get_annotation <- function(annotation_id, text_format = "dom") {
-  # Check if the Genius API token is set
+genius_get_annotation <- function(annotation_id) {
+  # Ensure the API token is set
   check_genius_token()
-
-  # Get the access token from the environment
-  access_token <- Sys.getenv("GENIUS_API_TOKEN")
 
   # Base URL for the Genius API
   base_url <- paste0("https://api.genius.com/annotations/", annotation_id)
 
   # Set up the authorization header
-  headers <- httr::add_headers(Authorization = paste("Bearer", access_token))
-
-  # Define query parameters
-  query_params <- list(text_format = text_format)
+  headers <- httr::add_headers(Authorization = paste("Bearer", Sys.getenv("GENIUS_API_TOKEN")))
 
   # Make the GET request
-  response <- httr::GET(url = base_url, headers, query = query_params)
+  response <- httr::GET(url = base_url, headers)
 
   # Check if the request was successful
-  if (httr::status_code(response) != 200) {
+  if (httr::status_code(response) == 401) {
+    stop("Request failed with status: 401 - Unauthorized: Invalid access token or token is missing.")
+  } else if (httr::status_code(response) == 404) {
+    stop("Request failed with status: 404 - Not Found: Annotation ID does not exist.")
+  } else if (httr::status_code(response) != 200) {
     stop("Request failed with status: ", httr::status_code(response), " - ", httr::content(response, "text", encoding = "UTF-8"))
   }
 
@@ -112,6 +109,7 @@ genius_get_annotation <- function(annotation_id, text_format = "dom") {
   content_as_json <- jsonlite::fromJSON(httr::content(response, "text", encoding = "UTF-8"), flatten = TRUE)
   return(content_as_json)
 }
+
 
 #' Retrieve Referents from Genius API
 #'

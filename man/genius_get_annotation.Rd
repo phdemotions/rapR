@@ -4,12 +4,10 @@
 \alias{genius_get_annotation}
 \title{Retrieve Annotation Details from Genius API}
 \usage{
-genius_get_annotation(annotation_id, text_format = "dom")
+genius_get_annotation(annotation_id)
 }
 \arguments{
 \item{annotation_id}{A string representing the ID of the annotation to retrieve. This parameter is required.}
-
-\item{text_format}{A string specifying the format of the text returned. Options are "dom" (default), "html", or "plain".}
 }
 \value{
 A list containing the annotation details in JSON format. The list includes various fields such as 'id', 'annotator_id', 'annotator_login', etc.

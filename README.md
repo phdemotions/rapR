@@ -32,7 +32,7 @@ set_genius_token("your_genius_api_token_here")
 ```
 Alternatively, you can store your token as an environment variable in your .Renviron file:
 ```r
-GENIUS_API_TOKEN=your_genius_api_token_here
+GENIUS_API_TOKEN <- "your_genius_api_token_here"
 ```
 
 ## Usage
