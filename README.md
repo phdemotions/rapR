@@ -1,20 +1,20 @@
 # rapR
 
-[![R-CMD-check](https://github.com/yourusername/rapR/workflows/R-CMD-check/badge.svg)](https://github.com/yourusername/rapR/actions)
+[![R-CMD-check](https://github.com/phdemotions/rapR/workflows/R-CMD-check/badge.svg)](https://github.com/phdemotions/rapR/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/rapR)](https://CRAN.R-project.org/package=rapR)
 
 `rapR` is an R package that provides an interface to the Genius and Spotify APIs, allowing users to retrieve annotations, referents, song details, artist details, and search results. It aims to make it easier for users to interact with these APIs directly from R.
 
 ## Installation
 
-You can install the development version of `rapR` from [GitHub](https://github.com/yourusername/rapR) with:
+You can install the development version of `rapR` from [GitHub](https://github.com/phdemotions/rapR) with:
 
 ```r
 # Install the remotes package if you haven't already
 install.packages("remotes")
 
 # Install the rapR package from GitHub
-remotes::install_github("yourusername/rapR")
+remotes::install_github("phdemotions/rapR")
 ```
 
 ## Setup
