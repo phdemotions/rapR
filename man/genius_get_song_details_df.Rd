@@ -5,6 +5,8 @@
 \title{Search for a Song and Retrieve Its Details as a Dataframe}
 \usage{
 genius_get_song_details_df(song_name)
+
+genius_get_song_details_df(song_name)
 }
 \arguments{
 \item{song_name}{A string representing the name of the song to search for. This parameter is required.}
@@ -12,13 +14,24 @@ genius_get_song_details_df(song_name)
 \value{
 A dataframe containing details about the song, including its ID, title, URL, release date, song art image URL,
 primary artist, lyrics state, and page views. The function will return an error if the song is not found or if there are issues with the API request.
+
+A dataframe containing details about the song, including its ID, title, URL, release date, song art image URL,
+primary artist, lyrics state, and page views. The function will return an error if the song is not found or if there are issues with the API request.
 }
 \description{
 This function searches for a song on Genius using its name and retrieves detailed information about the song.
 If multiple songs are found, the user is prompted to choose the correct song. The function returns the song's details
 in a dataframe format.
+
+This function searches for a song on Genius using its name and retrieves detailed information about the song.
+If multiple songs are found, the user is prompted to choose the correct song. The function returns the song's details
+in a dataframe format.
 }
 \examples{
+\dontrun{
+song_df <- genius_get_song_details_df("HUMBLE")
+print(song_df)
+}
 \dontrun{
 song_df <- genius_get_song_details_df("HUMBLE")
 print(song_df)
