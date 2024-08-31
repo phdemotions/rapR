@@ -32,7 +32,7 @@ set_genius_token("your_genius_api_token_here")
 ```
 Alternatively, you can store your token as an environment variable in your .Renviron file:
 ```r
-GENIUS_API_TOKEN <- "your_genius_api_token_here"
+Sys.setenv(GENIUS_API_TOKEN = "your_genius_api_token")
 ```
 
 ## Usage
@@ -60,9 +60,54 @@ print(search_results)
 
 ```
 ## Functions
-rapR provides several functions to interact with the Genius API:
 
+### Key Functions
 set_genius_token(): Set or update the Genius API token for the current session.
+
+`genius_get_artist_details_df()`
+This function searches for an artist on Genius by their name and retrieves detailed information about them. If multiple artists match the search query, the user is prompted to choose the correct one.
+
+- Parameters:
+  - artist_name: A string representing the name of the artist to search for.
+- Returns:
+  - A dataframe with details about the artist, including their ID, name, URL, header image URL, image URL, verification status, and IQ score.
+
+Example:
+```r
+artist_df <- genius_get_artist_details_df("Kendrick Lamar")
+print(artist_df)
+```
+`genius_get_song_details_df()`
+This function searches for a song on Genius by its name and retrieves detailed information about the song. If multiple songs match the search query, the user is prompted to choose the correct one.
+
+- Parameters:
+  - song_name: A string representing the name of the song to search for.
+- Returns:
+  - A dataframe containing details about the song, such as its ID, title, URL, release date, song art image URL, primary artist, lyrics state, and page views.
+
+Example:
+
+```r
+song_df <- genius_get_song_details_df("HUMBLE")
+print(song_df)
+```
+`genius_get_all_songs_from_artist()`
+This function retrieves all songs by a specific artist from the Genius API, handling pagination automatically. It fetches songs until all pages are retrieved and returns a consolidated list in a dataframe format.
+
+- Parameters:
+  - artist_id: A string representing the ID of the artist whose songs are to be retrieved.
+- Returns:
+  - A dataframe containing all songs by the specified artist, including various fields such as song ID, title, and other metadata.
+
+- Example:
+```r
+all_songs_df <- genius_get_all_songs_from_artist("12345")
+print(all_songs_df)
+```
+
+### Other Functions
+rapR provides several other functions to interact with the Genius API:
+
 genius_get_annotation(): Retrieve annotation details.
 genius_get_referents(): Retrieve referents (annotations) based on filters.
 genius_get_song(): Retrieve song details.
@@ -70,6 +115,8 @@ genius_get_artist(): Retrieve artist details.
 genius_get_artist_songs(): Retrieve songs by a specific artist.
 genius_get_web_page(): Retrieve details about a specific web page.
 genius_get_search_results(): Retrieve search results based on a query.
+
+
 
 ## Contributing
 Contributions to rapR are welcome! If you find a bug or have a feature request, please open an issue on [GitHub](https://github.com/phdemotions/rapR/issues).
