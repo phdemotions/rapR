@@ -72,7 +72,7 @@ genius_get_web_page(): Retrieve details about a specific web page.
 genius_get_search_results(): Retrieve search results based on a query.
 
 ## Contributing
-Contributions to rapR are welcome! If you find a bug or have a feature request, please open an issue on GitHub.
+Contributions to rapR are welcome! If you find a bug or have a feature request, please open an issue on [GitHub](https://github.com/phdemotions/rapR/issues).
 
 ## License
 This package is licensed under the MIT License. See the LICENSE file for more details.
