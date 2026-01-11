@@ -1,3 +1,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^paper\.md$
+^paper\.bib$
+^\.zenodo\.json$
+^CITATION\.cff$
+^\.DS_Store$
+^\.git$
+^\.gitignore$

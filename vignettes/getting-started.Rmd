@@ -1,0 +1,373 @@
+---
+title: "Getting Started with rapR: A Guide for Music Psychology Researchers"
+author: "Josh Gonzales"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with rapR: A Guide for Music Psychology Researchers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+## Introduction: Why rapR?
+
+As a music psychology researcher, you might want to analyze song lyrics, track artist evolution, or study music trends. **rapR** makes this possible without needing to be a programmer. This guide walks you through everything step-by-step.
+
+## What You'll Learn
+
+By the end of this guide, you'll be able to:
+
+1. Set up rapR and get your API credentials
+2. Search for artists and songs
+3. Collect data about an artist's entire discography
+4. Export your data to Excel or CSV for analysis
+5. Create basic visualizations of music data
+
+**No prior programming experience needed!** Just copy and paste the code examples.
+
+## Step 1: Installation
+
+First, install rapR. Copy and paste this into your R console:
+
+```{r install, eval=FALSE}
+# Install the package that lets us install from GitHub
+install.packages("remotes")
+
+# Install rapR
+remotes::install_github("phdemotions/rapR")
+
+# Load the package
+library(rapR)
+```
+
+## Step 2: Getting Your Genius API Token
+
+To use rapR, you need a free API token from Genius. Don't worry - it's simple!
+
+### How to Get Your Token:
+
+1. Go to https://genius.com/api-clients
+2. Sign in (or create a free account)
+3. Click "New API Client"
+4. Fill in:
+   - **App Name**: "My Research Project" (or anything you like)
+   - **App Website URL**: "https://yourwebsite.com" (can be anything)
+5. Click "Save"
+6. Click "Generate Access Token"
+7. Copy the long string of letters and numbers - this is your token!
+
+### Setting Your Token in R:
+
+```{r set-token, eval=FALSE}
+# Replace YOUR_TOKEN_HERE with the token you copied
+set_genius_token("YOUR_TOKEN_HERE")
+```
+
+**Pro Tip**: To avoid entering your token every time, add it to your `.Renviron` file. Run this once:
+
+```{r save-token, eval=FALSE}
+# This opens a file where you can save your token permanently
+usethis::edit_r_environ()
+
+# In the file that opens, add this line (with YOUR actual token):
+# GENIUS_API_TOKEN=your_token_here
+
+# Save the file and restart R
+```
+
+## Step 3: Your First Search - Finding an Artist
+
+Let's search for an artist. We'll use Kendrick Lamar as an example:
+
+```{r search-artist, eval=FALSE}
+# Search for Kendrick Lamar
+artist_data <- genius_get_artist_details_df("Kendrick Lamar")
+
+# View the data
+print(artist_data)
+```
+
+You'll see information like:
+- Artist ID (you'll need this later!)
+- Artist name
+- Genius URL
+- Verification status
+- IQ score (Genius's measure of community contributions)
+
+**If multiple artists appear**: The function will ask you to choose the correct one - just type the number and press Enter!
+
+## Step 4: Finding a Specific Song
+
+Want data about a specific song?
+
+```{r search-song, eval=FALSE}
+# Search for the song "HUMBLE."
+song_data <- genius_get_song_details_df("HUMBLE")
+
+# View the data
+print(song_data)
+```
+
+You'll get:
+- Song title
+- Artist name
+- Release date
+- URL to the Genius page
+- Page views (popularity metric!)
+- Lyrics state (whether lyrics are complete)
+
+## Research Example: Analyzing an Artist's Career
+
+Here's a complete research workflow. Let's say you want to study how an artist's popularity has changed over time.
+
+### Collecting All Songs by an Artist
+
+```{r get-all-songs, eval=FALSE}
+# First, get the artist's ID from your previous search
+# For this example, let's say Kendrick Lamar's ID is 1421
+artist_id <- "1421"  # Replace with the actual ID from your search
+
+# Get ALL songs by this artist
+all_songs <- genius_get_all_songs_from_artist(artist_id)
+
+# View the first few rows
+head(all_songs)
+
+# How many songs did we get?
+nrow(all_songs)
+```
+
+**Note**: This might take a few minutes for artists with many songs. The function automatically pauses between requests to be respectful to Genius's servers.
+
+### Saving Your Data
+
+Now save this data so you can analyze it in Excel, SPSS, or other tools:
+
+```{r save-data, eval=FALSE}
+# Save as Excel file
+library(writexl)
+write_xlsx(all_songs, "kendrick_songs.xlsx")
+
+# OR save as CSV
+write.csv(all_songs, "kendrick_songs.csv", row.names = FALSE)
+```
+
+### Basic Analysis in R
+
+Even without advanced R skills, you can do simple analyses:
+
+```{r basic-analysis, eval=FALSE}
+# Load dplyr for easy data manipulation
+library(dplyr)
+
+# Count how many songs per album
+songs_per_album <- all_songs %>%
+  group_by(full_title) %>%
+  summarise(count = n())
+
+print(songs_per_album)
+
+# Get summary statistics
+summary(all_songs)
+```
+
+## Research Example: Comparing Multiple Artists
+
+Want to compare different artists? Here's how:
+
+```{r compare-artists, eval=FALSE}
+# Get data for multiple artists
+artist1 <- genius_get_artist_details_df("Kendrick Lamar")
+artist2 <- genius_get_artist_details_df("J. Cole")
+artist3 <- genius_get_artist_details_df("Drake")
+
+# Combine into one dataset
+library(dplyr)
+comparison <- bind_rows(
+  artist1 %>% mutate(artist_searched = "Kendrick Lamar"),
+  artist2 %>% mutate(artist_searched = "J. Cole"),
+  artist3 %>% mutate(artist_searched = "Drake")
+)
+
+# Save for analysis
+write_xlsx(comparison, "artist_comparison.xlsx")
+```
+
+## Research Example: Studying Song Lyrics and Annotations
+
+Genius is famous for its crowdsourced lyric annotations. Here's how to access them:
+
+```{r annotations, eval=FALSE}
+# Search for a song and get its details
+song <- genius_get_song_details_df("Alright")
+
+# Get the song ID from the results
+song_id <- song$id
+
+# Get all annotations (interpretations) for this song
+annotations <- genius_get_referents(song_id = song_id)
+
+# View the annotations
+print(annotations)
+```
+
+This gives you access to:
+- What parts of lyrics are annotated
+- Community interpretations
+- Number of annotations per song (measure of cultural impact!)
+
+## Creating Simple Visualizations
+
+Even basic visualizations can reveal interesting patterns:
+
+```{r visualizations, eval=FALSE}
+# Load ggplot2 for visualization
+library(ggplot2)
+
+# Visualize page views across songs (if you have that data)
+# Assuming you have a dataset with song titles and page views
+ggplot(song_data, aes(x = release_date, y = page_views)) +
+  geom_point() +
+  geom_smooth() +
+  labs(
+    title = "Song Popularity Over Time",
+    x = "Release Date",
+    y = "Page Views"
+  ) +
+  theme_minimal()
+```
+
+## Research Applications
+
+Here are some research questions you can answer with rapR:
+
+### Music Psychology Research:
+- How do emotional themes in lyrics change across an artist's career?
+- What makes some songs more culturally significant (more annotations)?
+- How does audience engagement (page views) relate to critical acclaim?
+
+### Cultural Studies:
+- How do different genres use language differently?
+- What social issues are referenced in popular music?
+- How has the diversity of voices in music changed over time?
+
+### Computational Analysis:
+- Build datasets of thousands of songs for machine learning
+- Track trends in music over decades
+- Compare artists across genres
+
+## Troubleshooting Common Issues
+
+### "Request failed with status: 401"
+Your API token is incorrect or expired. Get a new one from Genius and use `set_genius_token()` again.
+
+### "Song not found in search results"
+Try a more specific search. For example:
+- Instead of "Humble", try "HUMBLE Kendrick Lamar"
+- Check the spelling
+- Try searching on Genius.com first to see how the song is listed
+
+### Too many results to choose from
+The function will show you options. Just type the number of the correct one!
+
+### Data looks complicated
+Start small! Extract just the columns you need:
+
+```{r simplify, eval=FALSE}
+# Select just the columns you want
+library(dplyr)
+simple_data <- all_songs %>%
+  select(title, artist, release_date, url)
+```
+
+## Next Steps
+
+### Learn More R:
+- [R for Data Science](https://r4ds.had.co.nz/) - Free online book
+- [RStudio Education](https://education.rstudio.com/)
+
+### Explore Other rapR Functions:
+- `genius_get_search_results()` - General search
+- `genius_get_web_page()` - Get web page data
+- `genius_get_annotation()` - Get specific annotations
+
+### Join the Community:
+- Report bugs: https://github.com/phdemotions/rapR/issues
+- Ask questions: Open a GitHub issue with the "question" label
+- Share your research: We'd love to hear how you use rapR!
+
+## Example Research Workflow: Complete Project
+
+Here's a complete example from start to finish:
+
+```{r complete-example, eval=FALSE}
+# 1. Load packages
+library(rapR)
+library(dplyr)
+library(writexl)
+
+# 2. Set your token
+set_genius_token("YOUR_TOKEN_HERE")
+
+# 3. Research question: How has Drake's discography grown over time?
+
+# Get Drake's information
+drake <- genius_get_artist_details_df("Drake")
+drake_id <- drake$id
+
+# Get all his songs
+drake_songs <- genius_get_all_songs_from_artist(drake_id)
+
+# 4. Get details for top 10 songs
+top_songs <- drake_songs %>%
+  head(10)
+
+# 5. Get detailed information for each song
+song_details <- data.frame()
+
+for (i in 1:nrow(top_songs)) {
+  song_name <- top_songs$title[i]
+
+  # Get details
+  details <- genius_get_song_details_df(song_name)
+
+  # Add to our dataset
+  song_details <- bind_rows(song_details, details)
+
+  # Pause between requests
+  Sys.sleep(2)
+}
+
+# 6. Save your data
+write_xlsx(list(
+  "Artist Info" = drake,
+  "All Songs" = drake_songs,
+  "Top Songs Details" = song_details
+), "drake_research_data.xlsx")
+
+# 7. You now have data ready for analysis in Excel, SPSS, or other tools!
+```
+
+## Citation
+
+If you use rapR in your research, please cite it:
+
+```{r citation, eval=FALSE}
+citation("rapR")
+```
+
+This helps us show the impact of the package and keep it maintained!
+
+## Conclusion
+
+You don't need to be a programmer to use rapR for your research. Start with the examples in this guide, modify them for your needs, and don't be afraid to experiment. The R community is friendly and helpful!
+
+**Happy researching!**
