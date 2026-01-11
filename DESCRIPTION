@@ -11,7 +11,7 @@ Authors@R: c(
 Description: Provides an interface to the Genius and Spotify API, allowing users to retrieve
     annotations, referents, song details, artist details, and search results.
 License: MIT + file LICENSE
-URL: https://github.com/phdemotions/rapR, https://joshgonzales.ca
+URL: https://github.com/phdemotions/rapR
 BugReports: https://github.com/phdemotions/rapR/issues
 Encoding: UTF-8
 LazyData: true

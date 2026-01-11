@@ -9,7 +9,7 @@ authors:
     email: jgonza10@uoguelph.ca
     orcid: 'https://orcid.org/0000-0001-8633-3380'
 repository-code: 'https://github.com/phdemotions/rapR'
-url: 'https://joshgonzales.ca'
+url: 'https://github.com/phdemotions/rapR'
 abstract: >-
   rapR provides an interface to the Genius and Spotify APIs,
   allowing users to retrieve annotations, referents, song details,

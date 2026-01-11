@@ -6,5 +6,12 @@
 ^\.zenodo\.json$
 ^CITATION\.cff$
 ^\.DS_Store$
+<<<<<<< Updated upstream
 ^\.git$
 ^\.gitignore$
+=======
+^artifacts$
+^\.claude$
+^\.github$
+^cran-comments\.md$
+>>>>>>> Stashed changes

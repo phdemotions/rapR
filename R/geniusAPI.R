@@ -57,13 +57,19 @@ check_genius_token <- function() {
 
   # Check if the token is not set
   if (access_token == "") {
-    # Prompt the user for the token
-    access_token <- readline(prompt = "The 'GENIUS_API_TOKEN' environment variable is not set. Please enter your Genius API token: ")
+    # Only prompt for token in interactive mode
+    if (interactive()) {
+      # Prompt the user for the token
+      access_token <- readline(prompt = "The 'GENIUS_API_TOKEN' environment variable is not set. Please enter your Genius API token: ")
 
-    # If the user provides a token, set it in the environment for the current session
-    if (access_token != "") {
-      Sys.setenv(GENIUS_API_TOKEN = access_token)
+      # If the user provides a token, set it in the environment for the current session
+      if (access_token != "") {
+        Sys.setenv(GENIUS_API_TOKEN = access_token)
+      } else {
+        stop("Access token is missing. Please set the 'GENIUS_API_TOKEN' environment variable.")
+      }
     } else {
+      # In non-interactive mode, just stop with a clear message
       stop("Access token is missing. Please set the 'GENIUS_API_TOKEN' environment variable.")
     }
   }
