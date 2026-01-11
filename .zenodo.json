@@ -1,0 +1,35 @@
+{
+  "title": "rapR: R Interface for Using Genius and Spotify API",
+  "description": "rapR provides an interface to the Genius and Spotify APIs, allowing users to retrieve annotations, referents, song details, artist details, and search results directly from R. This package simplifies the process of accessing music metadata and lyrics annotations for research and analysis purposes.",
+  "license": "MIT",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Gonzales, Josh",
+      "affiliation": "University of Guelph",
+      "orcid": "0000-0001-8633-3380"
+    }
+  ],
+  "keywords": [
+    "R",
+    "Genius API",
+    "Spotify API",
+    "music metadata",
+    "lyrics",
+    "API wrapper",
+    "data science",
+    "music information retrieval"
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/phdemotions/rapR"
+    }
+  ],
+  "contributors": [],
+  "communities": [
+    {
+      "identifier": "zenodo"
+    }
+  ]
+}
