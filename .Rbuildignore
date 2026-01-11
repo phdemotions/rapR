@@ -6,3 +6,5 @@
 ^\.zenodo\.json$
 ^CITATION\.cff$
 ^\.DS_Store$
+^\.git$
+^\.gitignore$
