@@ -7,11 +7,17 @@
 ^CITATION\.cff$
 ^\.DS_Store$
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ^\.git$
 ^\.gitignore$
 =======
+=======
+>>>>>>> Stashed changes
 ^artifacts$
 ^\.claude$
 ^\.github$
 ^cran-comments\.md$
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
